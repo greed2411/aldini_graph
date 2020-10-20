@@ -10,7 +10,7 @@ NODE_RELATIONSHIP = "SIMILAR"
 graph = py2neo.Graph(address=ADDRESS, auth=AUTH)
 
 
-def create_user(uid: str, name: str):
+def create_user(uid: str, name: str) -> bool:
     """
     takes user's unique id and name as inputs
     to insert as a node in the neo4j db
@@ -32,7 +32,7 @@ def create_user(uid: str, name: str):
     return graph.exists(user)
 
 
-def create_similarity(from_uid: str, to_uid: str, conf: float):
+def create_similarity(from_uid: str, to_uid: str, conf: float) -> bool:
     """
     to create a relationship called "SIMILAR" between two nodes with
     confidence score as a property for that relationship.
