@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  neo4j:
+    image: "neo4j:latest"
+    restart: "always"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
+      - $HOME/neo4j/import:/var/lib/neo4j/import
+      - $HOME/neo4j/plugins:/plugins
+    environment:
+      # username/password
+      NEO4J_AUTH: neo4j/test
