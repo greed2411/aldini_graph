@@ -1,13 +1,29 @@
+"""
+has functions which can be used for:
+    * creating new nodes.
+    * creating relationships between two existing nodes.
+"""
+
+
+import os
 import uuid
 
+import dotenv
 import py2neo
 
-ADDRESS = "localhost:7687"
-AUTH = ("neo4j", "test")
+# constants for user node label and relationship property value
 NODE_LABEL = "User"
 NODE_RELATIONSHIP = "SIMILAR"
 
-graph = py2neo.Graph(address=ADDRESS, auth=AUTH)
+dotenv.load_dotenv(verbose=True)
+
+NEO4J_ADDRESS = os.getenv("NEO4J_ADDRESS")
+NEO4J_AUTH_USERNAME=os.getenv("NEO4J_AUTH_USERNAME")
+NEO4J_AUTH_PASSWORD=os.getenv("NEO4J_AUTH_PASSWORD")
+
+AUTH = (NEO4J_AUTH_USERNAME, NEO4J_AUTH_PASSWORD)
+
+graph = py2neo.Graph(address=NEO4J_ADDRESS, auth=AUTH)
 
 
 def create_user(uid: str, name: str) -> bool:
@@ -54,26 +70,3 @@ def create_similarity(from_uid: str, to_uid: str, conf: float) -> bool:
     graph.create(similar)
 
     return graph.exists(similar)
-
-
-if __name__=="__main__":
-
-    # only for raw sample examples
-
-    from_uid = str(uuid.uuid4())
-    to_uid = str(uuid.uuid4())
-
-    print(create_user(uid=from_uid, name="yaswant"))
-    print(create_user(uid=to_uid, name="bhavesh"))
-
-    print(create_similarity(from_uid, to_uid, 0.78))
-
-    from_uid = str(uuid.uuid4())
-    to_uid = str(uuid.uuid4())
-
-    print(create_user(uid=from_uid, name="rithumbhara"))
-    print(create_user(uid=to_uid, name="shaaran"))
-
-    print(create_similarity(from_uid, to_uid, 0.999))
-
-    print(create_user(uid=str(uuid.uuid4()), name="jaivarsan"))
